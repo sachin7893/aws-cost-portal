@@ -1,25 +1,20 @@
-import React, { useMemo, useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
-import { ThemeProvider, CssBaseline } from "@mui/material";
-import App from "./App";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { BrowserRouter } from "react-router-dom";
 import theme from "./theme";
-
-const Root = () => {
-	  const [mode, setMode] = useState("light");
-
-	  const theme = useMemo(() => getTheme(mode), [mode]);
-
-	  const toggleTheme = () => {
-		      setMode((prev) => (prev === "light" ? "dark" : "light"));
-		    };
-
-	  return (
-		      <ThemeProvider theme={theme}>
-		        <CssBaseline />
-		        <App toggleTheme={toggleTheme} mode={mode} />
-		      </ThemeProvider>
-		    );
-};
+import App from "./App";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<Root />);
+
+root.render(
+  <React.StrictMode>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ThemeProvider>
+  </React.StrictMode>
+);
