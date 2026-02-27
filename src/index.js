@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import App from "./App";
-import { getTheme } from "./theme";
+import theme from "./theme";
 
 const Root = () => {
 	  const [mode, setMode] = useState("light");
