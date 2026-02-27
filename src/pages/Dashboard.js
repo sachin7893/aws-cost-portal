@@ -1,19 +1,13 @@
-import React from "react";
-import KpiCard from "../components/KpiCard";
+import KPISection from "../components/KPISection";
+import InventoryGraph from "../components/InventoryGraph";
 
-function Dashboard() {
+const Dashboard = () => {
 	  return (
-		      <div style={{ padding: "30px" }}>
-		        <h2>Executive Dashboard</h2>
-
-		        <div style={{ display: "flex", gap: "20px", marginTop: "20px" }}>
-		          <KpiCard title="Total Monthly Cost" value="$42,300" />
-		          <KpiCard title="Savings Identified" value="$8,950" />
-		          <KpiCard title="Idle Resources" value="17" />
-		          <KpiCard title="Optimization Score" value="84%" />
-		        </div>
-		      </div>
+		      <>
+		        <KPISection />
+		        <InventoryGraph />
+		      </>
 		    );
-}
+};
 
 export default Dashboard;
