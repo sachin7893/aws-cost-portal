@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Card, CardContent, Typography } from "@mui/material";
+import { motion } from "framer-motion";
 
 const kpis = [
 	  { title: "Monthly Spend", value: "$42,300" },
@@ -7,22 +7,18 @@ const kpis = [
 	  { title: "Idle Resources", value: "23" },
 	  { title: "Coverage %", value: "71%" }
 ];
-
-function KPISection() {
+function KpiCard({ title, value }) {
 	  return (
-		      <Grid container spacing={3}>
-		        {kpis.map((kpi, index) => (
-				        <Grid item xs={12} md={3} key={index}>
-				          <Card>
-				            <CardContent>
-				              <Typography variant="subtitle2">{kpi.title}</Typography>
-				              <Typography variant="h5">{kpi.value}</Typography>
-				            </CardContent>
-				          </Card>
-				        </Grid>
-				      ))}
-		      </Grid>
+		      <motion.div
+		        className="kpi-card"
+		        initial={{ opacity: 0, y: 30 }}
+		        animate={{ opacity: 1, y: 0 }}
+		        transition={{ duration: 0.4 }}
+		      >
+		        <h4>{title}</h4>
+		        <h2>{value}</h2>
+		      </motion.div>
 		    );
 }
 
-export default KPISection;
+export default KpiCard;

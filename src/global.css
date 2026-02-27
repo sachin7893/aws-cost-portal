@@ -1,116 +1,224 @@
-/* RESET */
-body {
+/* ===============================
+   GLOBAL RESET
+================================ */
+
+* {
   margin: 0;
-  font-family: "Inter", "Segoe UI", sans-serif;
-  background: #f8fafc;
-  color: #1e293b;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* MAIN LAYOUT */
+body {
+  font-family: Inter, Roboto, Arial, sans-serif;
+  background-color: #f3f4f6;
+}
+
+/* ===============================
+   LAYOUT
+================================ */
+
 .page-container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
 }
 
-/* SIDEBAR */
-.sidebar {
-  width: 260px;
-  background: linear-gradient(180deg, #f97316, #ea580c);
-  color: white;
-  padding: 30px 20px;
-  display: flex;
-  flex-direction: column;
-}
-
-.sidebar h2 {
-  margin-bottom: 30px;
-  font-weight: 600;
-}
-
-.sidebar a {
-  padding: 14px 16px;
-  margin-bottom: 10px;
-  text-decoration: none;
-  color: white;
-  border-radius: 12px;
-  font-weight: 500;
-  transition: 0.3s;
-}
-
-/* Modern Tab Style */
-.sidebar a:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.sidebar a.active {
-  background: white;
-  color: #ea580c;
-  font-weight: 600;
-}
-
-/* MAIN AREA */
 .main-wrapper {
   flex: 1;
   display: flex;
   flex-direction: column;
-}
-
-/* TOP BAR */
-.topbar {
-  height: 70px;
-  background: linear-gradient(90deg, #f97316, #ea580c);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 40px;
-  font-weight: 600;
-  font-size: 18px;
-}
-
-/* PAGE CONTENT */
-.main-content {
-  padding: 40px;
-  overflow-y: auto;
-}
-
-/* KPI CARDS */
-.kpi-grid {
-  display: flex;
-  gap: 25px;
-  margin-bottom: 40px;
-}
-
-.card {
-  background: white;
-  padding: 25px;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-  flex: 1;
   transition: 0.3s;
 }
 
-.card:hover {
-  transform: translateY(-5px);
+/* ===============================
+   SIDEBAR
+================================ */
+
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  background: linear-gradient(180deg, #111827, #1f2937);
+  color: white;
+  padding: 20px;
+  transition: width 0.3s ease;
+  position: sticky;
+  top: 0;
 }
 
-.card h3 {
-  margin: 0;
+.sidebar.collapsed {
+  width: 80px;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.sidebar-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.menu-btn {
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.menu-btn:hover {
+  transform: scale(1.1);
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #cbd5e1;
+  text-decoration: none;
+  padding: 12px 14px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.sidebar a:hover {
+  background: #374151;
+  color: white;
+}
+
+.sidebar a.active {
+  background: #2563eb;
+  color: white;
+  font-weight: 500;
+}
+
+/* ===============================
+   TOPBAR
+================================ */
+
+.topbar {
+  background: white;
+  padding: 15px 25px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  z-index: 10;
+}
+
+.theme-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.theme-btn:hover {
+  opacity: 0.85;
+}
+
+/* ===============================
+   PAGE CONTENT
+================================ */
+
+.page-content {
+  padding: 30px;
+  flex: 1;
+}
+
+/* ===============================
+   KPI CARDS
+================================ */
+
+.kpi-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.kpi-card {
+  padding: 25px;
+  border-radius: 16px;
+  width: 230px;
+  background: white;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+}
+
+.kpi-card h4 {
   font-size: 14px;
   color: #64748b;
+  margin-bottom: 10px;
+  font-weight: 500;
 }
 
-.card p {
+.kpi-card h2 {
   font-size: 26px;
-  font-weight: 700;
-  margin-top: 10px;
-  color: #ea580c;
+  font-weight: 600;
 }
 
-/* SECTION CARD */
-.section-card {
+/* ===============================
+   CHART CONTAINER
+================================ */
+
+.chart-container {
   background: white;
-  padding: 30px;
+  padding: 25px;
+  margin-top: 30px;
   border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* ===============================
+   DARK MODE SUPPORT
+   (MUI handles body background)
+================================ */
+
+body[data-mui-color-scheme="dark"] .topbar {
+  background: #1e293b;
+}
+
+body[data-mui-color-scheme="dark"] .sidebar {
+  background: linear-gradient(180deg, #0f172a, #1e293b);
+}
+
+body[data-mui-color-scheme="dark"] .kpi-card {
+  background: #1e293b;
+}
+
+body[data-mui-color-scheme="dark"] .chart-container {
+  background: #1e293b;
+}
+
+/* ===============================
+   SCROLLBAR (Enterprise Feel)
+================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
 }
