@@ -1,34 +1,15 @@
-import { createTheme } from "@mui/material/styles";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import theme from "./theme";
+import App from "./App";
 
-const theme = createTheme({
-	  palette: {
-		      primary: {
-			            main: "#F36F21",
-			          },
-		      secondary: {
-			            main: "#0F2B46",
-			          },
-		      background: {
-			            default: "#F5F7FA",
-			            paper: "#FFFFFF",
-			          },
-		    },
-	  typography: {
-		      fontFamily: "Poppins, sans-serif",
-		      h5: {
-			            fontWeight: 700,
-			          },
-		      h6: {
-			            fontWeight: 600,
-			          },
-		      button: {
-			            textTransform: "none",
-			            fontWeight: 600,
-			          },
-		    },
-	  shape: {
-		      borderRadius: 14,
-		    },
-});
+const root = ReactDOM.createRoot(document.getElementById("root"));
 
-export default theme;
+root.render(
+	  <ThemeProvider theme={theme}>
+	    <CssBaseline />
+	    <App />
+	  </ThemeProvider>
+);
