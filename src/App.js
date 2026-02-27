@@ -1,18 +1,23 @@
 import React from "react";
-import { ThemeProvider } from "./theme";
 import "./global.css";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 
 function App() {
-	  return (
-		      <ThemeProvider>
-		        <div className="page-container">
-		          <Sidebar />
-		          <Dashboard />
-		        </div>
-		      </ThemeProvider>
-		    );
+  return (
+    <div className="page-container">
+      <Sidebar />
+
+      <div className="main-wrapper">
+        <div className="topbar">
+          <div>Executive Dashboard</div>
+          <div>Welcome, Admin</div>
+        </div>
+
+        <Dashboard />
+      </div>
+    </div>
+  );
 }
 
 export default App;
