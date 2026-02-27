@@ -1,19 +1,27 @@
-import { createTheme } from "@mui/material/styles";
+import React, { createContext, useState, useEffect } from "react";
 
-const theme = createTheme({
-	  palette: {
-		      mode: "dark",
-		      primary: {
-			            main: "#4f46e5"
-			          },
-		      background: {
-			            default: "#0f172a",
-			            paper: "#1e293b"
-			          }
-		    },
-	  typography: {
-		      fontFamily: "Inter, sans-serif"
-		    }
-});
+export const ThemeContext = createContext();
 
-export default theme;
+export const ThemeProvider = ({ children }) => {
+	  const [theme, setTheme] = useState("dark");
+
+	  useEffect(() => {
+		      const saved = localStorage.getItem("app-theme");
+		      if (saved) setTheme(saved);
+		    }, []);
+
+	  useEffect(() => {
+		      document.body.className = theme;
+		      localStorage.setItem("app-theme", theme);
+		    }, [theme]);
+
+	  const toggleTheme = () => {
+		      setTheme(prev => (prev === "dark" ? "light" : "dark"));
+		    };
+
+	  return (
+		      <ThemeContext.Provider value={{ theme, toggleTheme }}>
+		        {children}
+		      </ThemeContext.Provider>
+		    );
+};

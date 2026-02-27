@@ -1,17 +1,19 @@
-import React from "react";
-import { Box } from "@mui/material";
-import Sidebar from "./Sidebar";
-import ChatWidget from "./ChatWidget";
+import React, { useContext } from "react";
+import { ThemeContext } from "../theme";
 
-function Layout({ children, active, setActive }) {
+function Layout({ children }) {
+	  const { theme, toggleTheme } = useContext(ThemeContext);
+
 	  return (
-		      <Box display="flex" height="100vh">
-		        <Sidebar active={active} setActive={setActive} />
-		        <Box flex={1} p={4} bgcolor="background.default">
-		          {children}
-		        </Box>
-		        <ChatWidget />
-		      </Box>
+		      <>
+		        <div className="topbar">
+		          <h2>Enterprise Cloud Portal</h2>
+		          <button className="theme-toggle" onClick={toggleTheme}>
+		            {theme === "dark" ? "🌙 Dark Mode" : "☀️ Light Mode"}
+		          </button>
+		        </div>
+		        {children}
+		      </>
 		    );
 }
 
