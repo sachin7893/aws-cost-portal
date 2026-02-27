@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
-import React from "react";
+
 import Layout from "../components/Layout";
 import { Typography, Paper } from "@mui/material";
 import FinOpsChat from "../components/FinOpsChat";
