@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import FinOpsChat from "../components/FinOpsChat";
 import {
 	  LineChart,
 	  Line,
@@ -11,7 +12,6 @@ import {
 	  CartesianGrid
 } from "recharts";
 import { motion } from "framer-motion";
-import "./FinOpsPage.css";
 
 function FinOpsPage() {
 	  const [data, setData] = useState([]);
