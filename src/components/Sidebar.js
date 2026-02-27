@@ -1,44 +1,62 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import SavingsIcon from "@mui/icons-material/Savings";
-import CloudIcon from "@mui/icons-material/Cloud";
-import StorageIcon from "@mui/icons-material/Storage";
-import AppsIcon from "@mui/icons-material/Apps";
-import MenuIcon from "@mui/icons-material/Menu";
-import "../global.css";
+import React from "react";
+import { Drawer, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import { Dashboard, Cloud, Storage, ViewInAr, Chat } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
-function Sidebar() {
-	  const [collapsed, setCollapsed] = useState(false);
+const drawerWidth = 240;
+
+export default function Sidebar() {
+	  const navigate = useNavigate();
 
 	  return (
-		      <div className={`sidebar ${collapsed ? "collapsed" : ""}`}>
-		        <div className="sidebar-header">
-		          <h2>{collapsed ? "🚀" : "FinOps Portal"}</h2>
-		          <MenuIcon onClick={() => setCollapsed(!collapsed)} className="menu-btn" />
-		        </div>
+		      <Drawer
+		        variant="permanent"
+		        sx={{
+				        width: drawerWidth,
+					        [`& .MuiDrawer-paper`]: {
+							          width: drawerWidth,
+							          boxSizing: "border-box",
+							          background: "#0F2B46",
+							          color: "white",
+							        },
+					      }}
+		      >
+		        <List sx={{ mt: 10 }}>
+		          <ListItemButton onClick={() => navigate("/")}>
+		            <ListItemIcon sx={{ color: "white" }}>
+		              <Dashboard />
+		            </ListItemIcon>
+		            <ListItemText primary="Dashboard" />
+		          </ListItemButton>
 
-		        <NavLink to="/" end>
-		          <DashboardIcon /> {!collapsed && "Dashboard"}
-		        </NavLink>
+		          <ListItemButton onClick={() => navigate("/finops")}>
+		            <ListItemIcon sx={{ color: "white" }}>
+		              <Cloud />
+		            </ListItemIcon>
+		            <ListItemText primary="FinOps" />
+		          </ListItemButton>
 
-		        <NavLink to="/finops">
-		          <SavingsIcon /> {!collapsed && "FinOps"}
-		        </NavLink>
+		          <ListItemButton onClick={() => navigate("/ec2")}>
+		            <ListItemIcon sx={{ color: "white" }}>
+		              <Storage />
+		            </ListItemIcon>
+		            <ListItemText primary="EC2" />
+		          </ListItemButton>
 
-		        <NavLink to="/cloudops">
-		          <CloudIcon /> {!collapsed && "CloudOps"}
-		        </NavLink>
+		          <ListItemButton onClick={() => navigate("/ecs")}>
+		            <ListItemIcon sx={{ color: "white" }}>
+		              <ViewInAr />
+		            </ListItemIcon>
+		            <ListItemText primary="ECS" />
+		          </ListItemButton>
 
-		        <NavLink to="/ec2">
-		          <StorageIcon /> {!collapsed && "EC2"}
-		        </NavLink>
-
-		        <NavLink to="/ecs">
-		          <AppsIcon /> {!collapsed && "ECS"}
-		        </NavLink>
-		      </div>
+		          <ListItemButton onClick={() => navigate("/eks")}>
+		            <ListItemIcon sx={{ color: "white" }}>
+		              <ViewInAr />
+		            </ListItemIcon>
+		            <ListItemText primary="EKS" />
+		          </ListItemButton>
+		        </List>
+		      </Drawer>
 		    );
 }
-
-export default Sidebar;

@@ -1,24 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { getTopIncrease } from "../services/api";
-import TopIncreaseChart from "./TopIncreaseChart";
+import React from "react";
+import Layout from "../components/Layout";
+import KPISection from "../components/KPISection";
+import InventoryGraph from "../components/InventoryGraph";
+import ChatWidget from "../components/ChatWidget";
+import { Typography } from "@mui/material";
 
-function Dashboard() {
-	  const [data, setData] = useState([]);
-
-	  useEffect(() => {
-		      async function fetchData() {
-			            const res = await getTopIncrease();
-			            setData(res.data);
-			          }
-		      fetchData();
-		    }, []);
-
+export default function Dashboard() {
 	  return (
-		      <div>
-		        <h2>Top Cost Increase Resources</h2>
-		        <TopIncreaseChart data={data} />
-		      </div>
+		      <Layout>
+		        <Typography variant="h5" gutterBottom>
+		          Dashboard Overview
+		        </Typography>
+
+		        <KPISection />
+		        <InventoryGraph />
+		        <ChatWidget />
+		      </Layout>
 		    );
 }
-
-export default Dashboard;

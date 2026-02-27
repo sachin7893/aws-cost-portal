@@ -64,6 +64,9 @@ function FinOpsPage() {
 	  const barColor = "#6366f1";
 
 	  return (
+		  <Layout>
+		    <Typography variant="h5">Page Title</Typography>
+		    <Paper sx={{ p:3, mt:3 }}>
 		      <div className="main-content">
 		        {/* ===============================
 			          HEADER
@@ -226,6 +229,8 @@ function FinOpsPage() {
 
 		        <FinOpsChat />
 		      </div>
+		  </Paper>
+		  </Layout>
 		    );
 }
 

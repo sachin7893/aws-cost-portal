@@ -1,24 +1,38 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { Grid, Paper, Typography } from "@mui/material";
 
 const kpis = [
-	  { title: "Monthly Spend", value: "$42,300" },
-	  { title: "Savings Identified", value: "$8,500" },
-	  { title: "Idle Resources", value: "23" },
-	  { title: "Coverage %", value: "71%" }
+	  { title: "Total Cost", value: "$12,450" },
+	  { title: "EC2 Cost", value: "$5,200" },
+	  { title: "Savings Potential", value: "$1,340" },
+	  { title: "Unused Resources", value: "17" },
 ];
-function KpiCard({ title, value }) {
+
+export default function KPISection() {
 	  return (
-		      <motion.div
-		        className="kpi-card"
-		        initial={{ opacity: 0, y: 30 }}
-		        animate={{ opacity: 1, y: 0 }}
-		        transition={{ duration: 0.4 }}
-		      >
-		        <h4>{title}</h4>
-		        <h2>{value}</h2>
-		      </motion.div>
+		      <Grid container spacing={3}>
+		        {kpis.map((kpi, index) => (
+				        <Grid item xs={12} md={3} key={index}>
+				          <Paper
+				            elevation={4}
+				            sx={{
+						                  p: 3,
+							                  borderRadius: 3,
+							                  transition: "0.3s",
+							                  "&:hover": {
+										                  transform: "translateY(-5px)",
+										                },
+							                }}
+				          >
+				            <Typography variant="h6" color="text.secondary">
+				              {kpi.title}
+				            </Typography>
+				            <Typography variant="h4" sx={{ mt: 1 }}>
+				              {kpi.value}
+				            </Typography>
+				          </Paper>
+				        </Grid>
+				      ))}
+		      </Grid>
 		    );
 }
-
-export default KpiCard;
