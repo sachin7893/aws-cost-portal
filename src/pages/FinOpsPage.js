@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import FinOpsChat from "../components/FinOpsChat";
 import {
 	  LineChart,
@@ -9,103 +9,170 @@ import {
 	  ResponsiveContainer,
 	  BarChart,
 	  Bar,
-	  CartesianGrid
+	  CartesianGrid,
 } from "recharts";
 import { motion } from "framer-motion";
 
 function FinOpsPage() {
 	  const [data, setData] = useState([]);
 	  const [activeTab, setActiveTab] = useState("overview");
+	  const [loading, setLoading] = useState(true);
 
 	  useEffect(() => {
 		      fetch("https://0azsdk6qbb.execute-api.ap-south-1.amazonaws.com/prod/finops")
-		        .then(res => res.json())
-		        .then(data => setData(data))
-		        .catch(err => console.error(err));
+		        .then((res) => res.json())
+		        .then((data) => {
+				        setData(data);
+				        setLoading(false);
+				      })
+		        .catch((err) => {
+				        console.error(err);
+				        setLoading(false);
+				      });
 		    }, []);
 
-	  const totalCost = data.reduce((acc, curr) => acc + curr.total_cost, 0);
-	  const avgCost = data.length ? totalCost / data.length : 0;
-	  const maxMonth = data.length
-	    ? data.reduce((prev, curr) =>
-		            curr.total_cost > prev.total_cost ? curr : prev
-		          )
-	    : null;
+	  /* ===============================
+	   *      CALCULATIONS
+	   *        =============================== */
+
+	  const totalCost = useMemo(
+		      () => data.reduce((acc, curr) => acc + curr.total_cost, 0),
+		      [data]
+		    );
+
+	  const avgCost = useMemo(
+		      () => (data.length ? totalCost / data.length : 0),
+		      [data, totalCost]
+		    );
+
+	  const maxMonth = useMemo(() => {
+		      if (!data.length) return null;
+		      return data.reduce((prev, curr) =>
+			            curr.total_cost > prev.total_cost ? curr : prev
+			          );
+		    }, [data]);
+
+	  /* ===============================
+	   *      THEME-AWARE CHART COLORS
+	   *        =============================== */
+
+	  const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+
+	  const axisColor = isDark ? "#94a3b8" : "#64748b";
+	  const gridColor = isDark ? "#334155" : "#e2e8f0";
+	  const lineColor = "#3b82f6";
+	  const barColor = "#6366f1";
 
 	  return (
-		      <div className="dashboard-container">
-
-		        {/* MAIN CONTENT */}
-		        <div className="dashboard-main">
-
-		          <h1 className="dashboard-title">Enterprise FinOps Dashboard</h1>
-
-		          {/* KPI CARDS */}
-		          <div className="kpi-grid">
-
-		            <motion.div
-		              className="kpi-card"
-		              whileHover={{ scale: 1.05 }}
-		            >
-		              <h3>Total Spend</h3>
-		              <p>${totalCost.toFixed(2)}</p>
-		            </motion.div>
-
-		            <motion.div
-		              className="kpi-card"
-		              whileHover={{ scale: 1.05 }}
-		            >
-		              <h3>Avg Monthly</h3>
-		              <p>${avgCost.toFixed(2)}</p>
-		            </motion.div>
-
-		            <motion.div
-		              className="kpi-card"
-		              whileHover={{ scale: 1.05 }}
-		            >
-		              <h3>Highest Month</h3>
-		              <p>{maxMonth ? maxMonth.month : "-"}</p>
-		            </motion.div>
-
-		          </div>
-
-		          {/* CHARTS */}
-		          <div className="chart-container">
-
-		            <h2>Monthly Cost Trend</h2>
-		            <ResponsiveContainer width="100%" height={300}>
-		              <LineChart data={data}>
-		                <XAxis dataKey="month" stroke="#cbd5e1" />
-		                <YAxis stroke="#cbd5e1" />
-		                <Tooltip />
-		                <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-		                <Line
-		                  type="monotone"
-		                  dataKey="total_cost"
-		                  stroke="#38bdf8"
-		                  strokeWidth={3}
-		                />
-		              </LineChart>
-		            </ResponsiveContainer>
-
-		            <h2 style={{ marginTop: "40px" }}>Monthly Cost Comparison</h2>
-		            <ResponsiveContainer width="100%" height={300}>
-		              <BarChart data={data}>
-		                <XAxis dataKey="month" stroke="#cbd5e1" />
-		                <YAxis stroke="#cbd5e1" />
-		                <Tooltip />
-		                <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-		                <Bar dataKey="total_cost" fill="#6366f1" />
-		              </BarChart>
-		            </ResponsiveContainer>
-
-		          </div>
-
+		      <div className="main-content">
+		        {/* ===============================
+			          HEADER
+				        =============================== */}
+		        <div className="page-header">
+		          <div className="page-title">Enterprise FinOps Dashboard</div>
 		        </div>
 
-		        {/* RIGHT PANEL TABS */}
-		        <div className="dashboard-right">
+		        {/* ===============================
+			          KPI CARDS
+				        =============================== */}
 
+		        <div className="kpi-grid">
+		          <motion.div
+		            className="kpi-card"
+		            initial={{ opacity: 0, y: 30 }}
+		            animate={{ opacity: 1, y: 0 }}
+		            transition={{ duration: 0.5 }}
+		          >
+		            <div className="kpi-title">Total Spend</div>
+		            <div className="kpi-value">
+		              ${totalCost.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+		            </div>
+		          </motion.div>
+
+		          <motion.div
+		            className="kpi-card"
+		            initial={{ opacity: 0, y: 30 }}
+		            animate={{ opacity: 1, y: 0 }}
+		            transition={{ duration: 0.6 }}
+		          >
+		            <div className="kpi-title">Average Monthly</div>
+		            <div className="kpi-value">
+		              ${avgCost.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+		            </div>
+		          </motion.div>
+
+		          <motion.div
+		            className="kpi-card"
+		            initial={{ opacity: 0, y: 30 }}
+		            animate={{ opacity: 1, y: 0 }}
+		            transition={{ duration: 0.7 }}
+		          >
+		            <div className="kpi-title">Highest Month</div>
+		            <div className="kpi-value">
+		              {maxMonth ? maxMonth.month : "-"}
+		            </div>
+		          </motion.div>
+		        </div>
+
+		        {/* ===============================
+			          CHARTS
+				        =============================== */}
+
+		        <div className="chart-container">
+		          {loading ? (
+				            <p>Loading financial data...</p>
+				          ) : (
+						            <>
+						              <h2>Monthly Cost Trend</h2>
+
+						              <ResponsiveContainer width="100%" height={320}>
+						                <LineChart data={data}>
+						                  <XAxis dataKey="month" stroke={axisColor} />
+						                  <YAxis stroke={axisColor} />
+						                  <Tooltip />
+						                  <CartesianGrid
+						                    strokeDasharray="3 3"
+						                    stroke={gridColor}
+						                  />
+						                  <Line
+						                    type="monotone"
+						                    dataKey="total_cost"
+						                    stroke={lineColor}
+						                    strokeWidth={3}
+						                    dot={{ r: 4 }}
+						                  />
+						                </LineChart>
+						              </ResponsiveContainer>
+
+						              <h2 style={{ marginTop: "40px" }}>
+						                Monthly Cost Comparison
+						              </h2>
+
+						              <ResponsiveContainer width="100%" height={320}>
+						                <BarChart data={data}>
+						                  <XAxis dataKey="month" stroke={axisColor} />
+						                  <YAxis stroke={axisColor} />
+						                  <Tooltip />
+						                  <CartesianGrid
+						                    strokeDasharray="3 3"
+						                    stroke={gridColor}
+						                  />
+						                  <Bar
+						                    dataKey="total_cost"
+						                    fill={barColor}
+						                    radius={[6, 6, 0, 0]}
+						                  />
+						                </BarChart>
+						              </ResponsiveContainer>
+						            </>
+						          )}
+		        </div>
+
+		        {/* ===============================
+			          RIGHT PANEL TABS
+				        =============================== */}
+
+		        <div style={{ marginTop: "40px" }}>
 		          <div className="tab-buttons">
 		            <button
 		              className={activeTab === "overview" ? "active" : ""}
@@ -129,22 +196,35 @@ function FinOpsPage() {
 		            </button>
 		          </div>
 
-		          <div className="tab-content">
+		          <div className="chart-container" style={{ marginTop: "20px" }}>
 		            {activeTab === "overview" && (
-				                <p>Monitor AWS cost trends and financial performance metrics.</p>
+				                <p>
+				                  Monitor AWS cost trends, track spend growth, and analyze
+				                  financial KPIs across months.
+				                </p>
 				              )}
 
 		            {activeTab === "anomalies" && (
-				                <p>Identify abnormal spikes in EC2, S3, or Lambda usage.</p>
+				                <p>
+				                  Identify abnormal spikes across EC2, S3, Lambda and other
+				                  services using AI-based anomaly detection.
+				                </p>
 				              )}
 
 		            {activeTab === "recommendations" && (
-				                <p>Optimize by right-sizing EC2, applying Savings Plans, and removing idle resources.</p>
+				                <p>
+				                  Optimize costs by right-sizing workloads, applying Savings
+				                  Plans, Reserved Instances, and eliminating idle resources.
+				                </p>
 				              )}
 		          </div>
-
 		        </div>
 
+		        {/* ===============================
+			          FLOATING BEDROCK CHAT
+				        =============================== */}
+
+		        <FinOpsChat />
 		      </div>
 		    );
 }
